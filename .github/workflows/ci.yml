@@ -56,7 +56,7 @@ jobs:
         uses: ./
         with:
           inputFile: './public/sample.xlsx'
-          outputPath: './public/'
+          outputDir: './public/'
           filter: '{ "Segment": "segment" }'
 
       - name: Print Output
