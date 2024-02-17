@@ -38,7 +38,7 @@ steps:
 
   - name: xlsx To csv Action
     id: xlsx-to-csv-action
-    uses: actions/xlsx-to-csv-action@v1 # Commit with the `v1` tag
+    uses: JoeSiu/xlsx-to-csv-action@1.0.0
     with:
       inputFile: './public/sample.xlsx'
       outputDir: './public/'
