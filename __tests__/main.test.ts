@@ -16,7 +16,7 @@ const runMock = jest.spyOn(main, 'run')
 const outputPathRegex = /\.csv$/
 
 // Mock the GitHub Actions core library
-let debugMock: jest.SpyInstance
+// let debugMock: jest.SpyInstance
 let errorMock: jest.SpyInstance
 let getInputMock: jest.SpyInstance
 let setFailedMock: jest.SpyInstance
@@ -26,7 +26,7 @@ describe('action', () => {
   beforeEach(() => {
     jest.clearAllMocks()
 
-    debugMock = jest.spyOn(core, 'debug').mockImplementation()
+    // debugMock = jest.spyOn(core, 'debug').mockImplementation()
     errorMock = jest.spyOn(core, 'error').mockImplementation()
     getInputMock = jest.spyOn(core, 'getInput').mockImplementation()
     setFailedMock = jest.spyOn(core, 'setFailed').mockImplementation()

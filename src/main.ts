@@ -41,15 +41,15 @@ export async function run(): Promise<void> {
 
       // create a new header row and a map of column indices to keep
       let newHeader = ''
-      let columnsToKeep = new Map<number, boolean>()
+      const columnsToKeep = new Map<number, boolean>()
 
       // iterate over the original header and check if it matches any key in the filter object
-      for (let i = 0; i < header.length; i++) {
-        const key = header[i]
-        if (filterObj.hasOwnProperty(key)) {
+      for (let col = 0; col < header.length; col++) {
+        const key = header[col]
+        if (Object.hasOwn(filterObj, key)) {
           // if yes, append the corresponding value to the new header and mark the column index to keep
-          newHeader += filterObj[key] + ','
-          columnsToKeep.set(i, true)
+          newHeader += `${filterObj[key]},`
+          columnsToKeep.set(col, true)
           if (key !== filterObj[key]) {
             core.info(
               `The column "${key}" have been renamed to "${filterObj[key]}"`
@@ -72,14 +72,14 @@ export async function run(): Promise<void> {
       let newCsv = ''
 
       // iterate over the lines and split by comma
-      for (let i = 0; i < lines.length; i++) {
+      for (let row = 0; row < lines.length; row++) {
         // replace the first line of the csv with the new header
-        if (i === 0) {
-          newCsv += newHeader + '\n'
+        if (row === 0) {
+          newCsv += `${newHeader}\n`
           continue
         }
 
-        const values = lines[i].split(',')
+        const values = lines[row].split(',')
 
         // create a new line with only the values from the columns to keep
         let newLine = ''
@@ -88,7 +88,7 @@ export async function run(): Promise<void> {
         for (let i = 0; i < values.length; i++) {
           if (columnsToKeep.has(i)) {
             // if the column index is marked to keep, append the value to the new line
-            newLine += values[i] + ','
+            newLine += `${values[i]},`
           }
         }
 
@@ -96,7 +96,7 @@ export async function run(): Promise<void> {
         newLine = newLine.slice(0, -1)
 
         // append the new line to the new csv
-        newCsv += newLine + '\n'
+        newCsv += `${newLine}\n`
       }
 
       // replace the csv with the new csv
@@ -104,11 +104,10 @@ export async function run(): Promise<void> {
     }
 
     // create a new file
-    const outputFile =
-      path.join(
-        outputDir,
-        outputFilename || path.basename(inputFile, '.xlsx')
-      ) + '.csv'
+    const outputFile = `${path.join(
+      outputDir,
+      outputFilename || path.basename(inputFile, '.xlsx')
+    )}.csv`
 
     // write the csv content to the new file
     fs.writeFileSync(outputFile, csv)
