@@ -55,8 +55,11 @@ jobs:
         id: test-action
         uses: ./
         with:
-          milliseconds: 2000
+          inputFile: './public/sample.xlsx'
+          outputDir: './public/'
+          outputFilename: 'sample-filtered'
+          filter: '{ "Segment": "segment", "Country": "country" }'
 
       - name: Print Output
         id: output
-        run: echo "${{ steps.test-action.outputs.time }}"
+        run: echo "${{ steps.test-action.outputs.outputFile }}"
