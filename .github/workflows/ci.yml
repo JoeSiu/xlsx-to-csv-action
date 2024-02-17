@@ -57,7 +57,7 @@ jobs:
         with:
           inputFile: './public/sample.xlsx'
           outputDir: './public/'
-          filter: '{ "Segment": "segment" }'
+          filter: '{ "Segment": "segment"`, "Country": "country"` }'
 
       - name: Print Output
         id: output

@@ -1,29 +1,32 @@
-name: 'The name of your action here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'xlsx-to-csv-action'
+description:
+  'Convert xlsx file to csv file, with the ability to filter / rename columns'
+author: 'Joe Siu'
 
 # Add your action's branding here. This will appear on the GitHub Marketplace.
 branding:
-  icon: 'heart'
-  color: 'red'
+  icon: 'file-text'
+  color: 'gray-dark'
 
 # Define your inputs here.
 inputs:
   inputFile:
-    description: 'Input xlsx file'
+    description: 'Input xlsx file path'
     required: true
   outputDir:
     description: 'Output directory'
     required: true
     default: './'
   filter:
-    description: 'Filter columns in JSON format, e.g., {"Column 1": "column1", "Column 2": "column2"}'
+    description:
+      'Filter columns in JSON format, e.g., {"Column 1": "column1", "Column 2":
+      "column2"}'
     required: false
 
 # Define your outputs here.
 outputs:
-  time:
-    description: 'Your output description here'
+  outputFile:
+    description: 'Output csv file path'
 
 runs:
   using: node20
