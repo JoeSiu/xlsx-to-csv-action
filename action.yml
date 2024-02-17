@@ -9,10 +9,16 @@ branding:
 
 # Define your inputs here.
 inputs:
-  milliseconds:
-    description: 'Your input description here'
+  inputFile:
+    description: 'Input xlsx file'
     required: true
-    default: '1000'
+  outputDir:
+    description: 'Output directory'
+    required: true
+    default: './'
+  filter:
+    description: 'Filter columns in JSON format, e.g., {"Column 1": "column1", "Column 2": "column2"}'
+    required: false
 
 # Define your outputs here.
 outputs:

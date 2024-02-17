@@ -11,7 +11,7 @@ export async function run(): Promise<void> {
   try {
     // get the input file and header
     const inputFile = core.getInput('inputFile', { required: true })
-    const outputPath = core.getInput('outputPath')
+    const outputDir = core.getInput('outputDir')
     const outputFilename = core.getInput('outputFilename')
     const filter = core.getInput('filter')
 
@@ -105,18 +105,21 @@ export async function run(): Promise<void> {
 
     // create a new file
     const outputFile =
-      path.join(outputPath, outputFilename || path.basename(inputFile)) + '.csv'
+      path.join(
+        outputDir,
+        outputFilename || path.basename(inputFile, '.xlsx')
+      ) + '.csv'
 
     // write the csv content to the new file
     fs.writeFileSync(outputFile, csv)
 
     // get the output path of the new file
-    const outputFullPath = path.resolve(outputFile)
+    const outputPath = path.resolve(outputFile)
 
-    core.info(`Output file: ${outputFullPath}`)
+    core.info(`Output file: ${outputPath}`)
 
     // set the output path as an output of the action
-    core.setOutput('outputFile', outputFullPath)
+    core.setOutput('outputFile', outputPath)
   } catch (error) {
     // Fail the workflow run if an error occurs
     if (error instanceof Error) core.setFailed(error.message)

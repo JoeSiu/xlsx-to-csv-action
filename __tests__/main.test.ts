@@ -39,7 +39,7 @@ describe('action', () => {
       switch (name) {
         case 'inputFile':
           return './public/sample.xlsx'
-        case 'outputPath':
+        case 'outputDir':
           return './public/'
         default:
           return ''
@@ -64,7 +64,7 @@ describe('action', () => {
       switch (name) {
         case 'inputFile':
           return './public/sample.xlsx'
-        case 'outputPath':
+        case 'outputDir':
           return './public/'
         case 'outputFilename':
           return 'sample-filtered'
