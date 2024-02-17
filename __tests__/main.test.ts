@@ -13,7 +13,7 @@ import * as main from '../src/main'
 const runMock = jest.spyOn(main, 'run')
 
 // Other utilities
-const timeRegex = /^\d{2}:\d{2}:\d{2}/
+const outputPathRegex = /\.csv$/
 
 // Mock the GitHub Actions core library
 let debugMock: jest.SpyInstance
@@ -33,12 +33,14 @@ describe('action', () => {
     setOutputMock = jest.spyOn(core, 'setOutput').mockImplementation()
   })
 
-  it('sets the time output', async () => {
+  it('output csv', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation((name: string): string => {
       switch (name) {
-        case 'milliseconds':
-          return '500'
+        case 'inputFile':
+          return './public/sample.xlsx'
+        case 'outputPath':
+          return './public/'
         default:
           return ''
       }
@@ -48,29 +50,49 @@ describe('action', () => {
     expect(runMock).toHaveReturned()
 
     // Verify that all of the core library functions were called correctly
-    expect(debugMock).toHaveBeenNthCalledWith(1, 'Waiting 500 milliseconds ...')
-    expect(debugMock).toHaveBeenNthCalledWith(
-      2,
-      expect.stringMatching(timeRegex)
-    )
-    expect(debugMock).toHaveBeenNthCalledWith(
-      3,
-      expect.stringMatching(timeRegex)
-    )
     expect(setOutputMock).toHaveBeenNthCalledWith(
       1,
-      'time',
-      expect.stringMatching(timeRegex)
+      'outputFile',
+      expect.stringMatching(outputPathRegex)
     )
     expect(errorMock).not.toHaveBeenCalled()
   })
 
-  it('sets a failed status', async () => {
+  it('output fitered csv', async () => {
     // Set the action's inputs as return values from core.getInput()
     getInputMock.mockImplementation((name: string): string => {
       switch (name) {
-        case 'milliseconds':
-          return 'this is not a number'
+        case 'inputFile':
+          return './public/sample.xlsx'
+        case 'outputPath':
+          return './public/'
+        case 'outputFilename':
+          return 'sample-filtered'
+        case 'filter':
+          return '{ "Segment": "segment" }'
+        default:
+          return ''
+      }
+    })
+
+    await main.run()
+    expect(runMock).toHaveReturned()
+
+    // Verify that all of the core library functions were called correctly
+    expect(setOutputMock).toHaveBeenNthCalledWith(
+      1,
+      'outputFile',
+      expect.stringMatching(outputPathRegex)
+    )
+    expect(errorMock).not.toHaveBeenCalled()
+  })
+
+  it('non xlsx file provided', async () => {
+    // Set the action's inputs as return values from core.getInput()
+    getInputMock.mockImplementation((name: string): string => {
+      switch (name) {
+        case 'inputFile':
+          return './public/sample.csv'
         default:
           return ''
       }
@@ -82,7 +104,7 @@ describe('action', () => {
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'milliseconds not a number'
+      'The input file must be a xlsx file'
     )
     expect(errorMock).not.toHaveBeenCalled()
   })
