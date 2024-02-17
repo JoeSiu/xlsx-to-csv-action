@@ -11,16 +11,19 @@ branding:
 # Define your inputs here.
 inputs:
   inputFile:
-    description: 'Input xlsx file path'
+    description: 'Input file path, must be a `.xlsx` file'
     required: true
   outputDir:
     description: 'Output directory'
     required: true
     default: './'
+  outputFilename:
+    description: 'Output filename'
+    required: false
   filter:
     description:
-      'Filter columns in JSON format, e.g., {"Column 1": "column1", "Column 2":
-      "column2"}'
+      'A JSON string of the columns to filter and rename
+e.g., `{ "Segment": "segment", "Country": "country" }`'
     required: false
 
 # Define your outputs here.

@@ -15,12 +15,12 @@ Create a GitHub action workflow file, e.g., `.github/workflows/sample.yml`
 
 ### Input
 
-| Field            | Description                                                                                                  | Required |
-| ---------------- | ------------------------------------------------------------------------------------------------------------ | -------- |
-| `inputFile`      | Input file path, must be a `.xlsx` file                                                                      | ✅       |
-| `outputDir`      | Output directory                                                                                             | ✅       |
-| `outputFilename` | Output file name                                                                                             |          |
-| `filter`         | A JSON string of the column to filter and rename<br />e.g., `{ "Segment": "segment", "Country": "country" }` |          |
+| Field            | Description                                                                                                   | Required |
+| ---------------- | ------------------------------------------------------------------------------------------------------------- | -------- |
+| `inputFile`      | Input file path, must be a `.xlsx` file                                                                       | ✅       |
+| `outputDir`      | Output directory                                                                                              | ✅       |
+| `outputFilename` | Output filename                                                                                               |          |
+| `filter`         | A JSON string of the columns to filter and rename<br />e.g., `{ "Segment": "segment", "Country": "country" }` |          |
 
 ### Output
 
