@@ -15,16 +15,17 @@ Create a GitHub action workflow file, e.g., `.github/workflows/sample.yml`
 
 ### Input
 
-| Field         | Description                                                                                                    | Required |
-| ------------- | -------------------------------------------------------------------------------------------------------------- | -------- |
-| `inputFile` | Input file path, must be a `.xlsx` file                                                                      | ✅       |
-| `outputDir` | Output directory                                                                                               | ✅       |
-| `filter`    | A JSON string of the column to filter and rename<br />e.g., `{ "Segment": "segment", "Country": "country" }` |          |
+| Field            | Description                                                                                                  | Required |
+| ---------------- | ------------------------------------------------------------------------------------------------------------ | -------- |
+| `inputFile`      | Input file path, must be a `.xlsx` file                                                                      | ✅       |
+| `outputDir`      | Output directory                                                                                             | ✅       |
+| `outputFilename` | Output file name                                                                                             |          |
+| `filter`         | A JSON string of the column to filter and rename<br />e.g., `{ "Segment": "segment", "Country": "country" }` |          |
 
 ### Output
 
-| Field          | Description                      |
-| -------------- | -------------------------------- |
+| Field        | Description                    |
+| ------------ | ------------------------------ |
 | `outputFile` | Output file path of the `.csv` |
 
 ### Example
@@ -41,6 +42,7 @@ steps:
     with:
       inputFile: './public/sample.xlsx'
       outputDir: './public/'
+      outputFilename: 'sample-filtered'
       filter: '{ "Segment": "segment", "Country": "country" }'
 
   - name: Print Output
