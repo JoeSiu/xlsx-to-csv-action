@@ -10,3 +10,7 @@ MD029:
 MD013:
   line_length: 80
   tables: false
+
+# MD033/no-inline-html - Inline HTML
+MD033:
+  allowed_elements: []
