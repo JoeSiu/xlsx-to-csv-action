@@ -2722,6 +2722,138 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ 582:
+/***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
+
+"use strict";
+
+var __create = Object.create;
+var __defProp = Object.defineProperty;
+var __getOwnPropDesc = Object.getOwnPropertyDescriptor;
+var __getOwnPropNames = Object.getOwnPropertyNames;
+var __getProtoOf = Object.getPrototypeOf;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, { get: all[name], enumerable: true });
+};
+var __copyProps = (to, from, except, desc) => {
+  if (from && typeof from === "object" || typeof from === "function") {
+    for (let key of __getOwnPropNames(from))
+      if (!__hasOwnProp.call(to, key) && key !== except)
+        __defProp(to, key, { get: () => from[key], enumerable: !(desc = __getOwnPropDesc(from, key)) || desc.enumerable });
+  }
+  return to;
+};
+var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+  // If the importer is in node compatibility mode or this is not an ESM
+  // file that has been converted to a CommonJS file using a Babel-
+  // compatible transform (i.e. "__esModule" has not been set), then set
+  // "default" to the CommonJS "module.exports" for node compatibility.
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  mod
+));
+var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
+
+// src/index.ts
+var src_exports = {};
+__export(src_exports, {
+  convertXlsxToCsv: () => convertXlsxToCsv
+});
+module.exports = __toCommonJS(src_exports);
+var xlsx = __toESM(__nccwpck_require__(487));
+var fs = __toESM(__nccwpck_require__(147));
+var import_path = __toESM(__nccwpck_require__(17));
+function convertXlsxToCsv(_0) {
+  return __async(this, arguments, function* ({
+    inputFile,
+    outputDir = "./",
+    outputFilename,
+    filter
+  }) {
+    return new Promise((resolve, reject) => {
+      try {
+        if (!inputFile.endsWith(".xlsx")) {
+          throw new Error("The input file must be an XLSX file");
+        }
+        const workbook = xlsx.readFile(inputFile);
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        let csv = xlsx.utils.sheet_to_csv(worksheet);
+        if (filter) {
+          const lines = csv.split("\n");
+          const header = lines[0].split(",");
+          let newHeader = "";
+          const columnsToKeep = /* @__PURE__ */ new Map();
+          for (let col = 0; col < header.length; col++) {
+            const key = header[col];
+            if (filter.hasOwnProperty(key)) {
+              newHeader += `${filter[key]},`;
+              columnsToKeep.set(col, true);
+            }
+          }
+          newHeader = newHeader.slice(0, -1);
+          let newCsv = "";
+          for (let row = 0; row < lines.length; row++) {
+            if (row === 0) {
+              newCsv += `${newHeader}
+`;
+              continue;
+            }
+            const values = lines[row].split(",");
+            let newLine = "";
+            for (let i = 0; i < values.length; i++) {
+              if (columnsToKeep.has(i)) {
+                newLine += `${values[i]},`;
+              }
+            }
+            newLine = newLine.slice(0, -1);
+            newCsv += `${newLine}
+`;
+          }
+          csv = newCsv;
+        }
+        const outputFile = `${import_path.default.join(
+          outputDir,
+          outputFilename != null ? outputFilename : import_path.default.basename(inputFile, ".xlsx")
+        )}.csv`;
+        fs.writeFileSync(outputFile, csv);
+        const outputPath = import_path.default.resolve(outputFile);
+        resolve({
+          outputPath
+        });
+      } catch (error) {
+        reject(error);
+      }
+    });
+  });
+}
+// Annotate the CommonJS export names for ESM import in node:
+0 && (0);
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ 324:
 /***/ (function(module) {
 
@@ -28754,15 +28886,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__nccwpck_require__(186));
-const xlsx = __importStar(__nccwpck_require__(487));
-const fs = __importStar(__nccwpck_require__(147));
-const path_1 = __importDefault(__nccwpck_require__(17));
+const xlsx_to_csv_ts_1 = __nccwpck_require__(582);
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
@@ -28774,82 +28901,15 @@ async function run() {
         const outputDir = core.getInput('outputDir');
         const outputFilename = core.getInput('outputFilename');
         const filter = core.getInput('filter');
-        // check if the file is a xlsx file
-        if (!inputFile.endsWith('.xlsx')) {
-            throw new Error('The input file must be a xlsx file');
-        }
-        // read the xlsx file and get the first worksheet
-        const workbook = xlsx.readFile(inputFile);
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        // convert the xlsx to csv
-        let csv = xlsx.utils.sheet_to_csv(worksheet);
-        // if filter is provided, rename the header row and remove unwanted columns
-        if (filter) {
-            // parse the filter as a json object
-            const filterObj = JSON.parse(filter);
-            // split the csv by line
-            const lines = csv.split('\n');
-            // get the original header row and split by comma
-            const header = lines[0].split(',');
-            // create a new header row and a map of column indices to keep
-            let newHeader = '';
-            const columnsToKeep = new Map();
-            // iterate over the original header and check if it matches any key in the filter object
-            for (let col = 0; col < header.length; col++) {
-                const key = header[col];
-                if (Object.hasOwn(filterObj, key)) {
-                    // if yes, append the corresponding value to the new header and mark the column index to keep
-                    newHeader += `${filterObj[key]},`;
-                    columnsToKeep.set(col, true);
-                    if (key !== filterObj[key]) {
-                        core.info(`The column "${key}" have been renamed to "${filterObj[key]}"`);
-                    }
-                }
-                else {
-                    // if no, warn to console and skip the column index
-                    core.info(`The column "${key}" is not listed in the header object and will be removed`);
-                }
-            }
-            // remove the trailing comma from the new header
-            newHeader = newHeader.slice(0, -1);
-            core.info(`The header has been updated to: ${newHeader}`);
-            // create a new csv with only the columns to keep
-            let newCsv = '';
-            // iterate over the lines and split by comma
-            for (let row = 0; row < lines.length; row++) {
-                // replace the first line of the csv with the new header
-                if (row === 0) {
-                    newCsv += `${newHeader}\n`;
-                    continue;
-                }
-                const values = lines[row].split(',');
-                // create a new line with only the values from the columns to keep
-                let newLine = '';
-                // iterate over the values and check the column index
-                for (let i = 0; i < values.length; i++) {
-                    if (columnsToKeep.has(i)) {
-                        // if the column index is marked to keep, append the value to the new line
-                        newLine += `${values[i]},`;
-                    }
-                }
-                // remove the trailing comma from the new line
-                newLine = newLine.slice(0, -1);
-                // append the new line to the new csv
-                newCsv += `${newLine}\n`;
-            }
-            // replace the csv with the new csv
-            csv = newCsv;
-        }
-        // create a new file
-        const outputFile = `${path_1.default.join(outputDir, outputFilename || path_1.default.basename(inputFile, '.xlsx'))}.csv`;
-        // write the csv content to the new file
-        fs.writeFileSync(outputFile, csv);
-        // get the output path of the new file
-        const outputPath = path_1.default.resolve(outputFile);
-        core.info(`Output file: ${outputPath}`);
+        const result = await (0, xlsx_to_csv_ts_1.convertXlsxToCsv)({
+            inputFile: inputFile,
+            outputDir: outputDir || './',
+            outputFilename: outputFilename || undefined,
+            filter: filter ? JSON.parse(filter) : undefined
+        });
+        core.info(`Output file: ${result.outputPath}`);
         // set the output path as an output of the action
-        core.setOutput('outputFile', outputPath);
+        core.setOutput('outputFile', result.outputPath);
     }
     catch (error) {
         // Fail the workflow run if an error occurs

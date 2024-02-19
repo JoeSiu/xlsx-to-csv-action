@@ -104,7 +104,7 @@ describe('action', () => {
     // Verify that all of the core library functions were called correctly
     expect(setFailedMock).toHaveBeenNthCalledWith(
       1,
-      'The input file must be a xlsx file'
+      'The input file must be an XLSX file'
     )
     expect(errorMock).not.toHaveBeenCalled()
   })
