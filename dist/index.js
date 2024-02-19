@@ -28902,7 +28902,7 @@ async function run() {
         const outputFilename = core.getInput('outputFilename');
         const filter = core.getInput('filter');
         const result = await (0, xlsx_to_csv_ts_1.convertXlsxToCsv)({
-            inputFile: inputFile,
+            inputFile,
             outputDir: outputDir || './',
             outputFilename: outputFilename || undefined,
             filter: filter ? JSON.parse(filter) : undefined

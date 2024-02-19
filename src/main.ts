@@ -14,7 +14,7 @@ export async function run(): Promise<void> {
     const filter = core.getInput('filter')
 
     const result = await convertXlsxToCsv({
-      inputFile: inputFile,
+      inputFile,
       outputDir: outputDir || './',
       outputFilename: outputFilename || undefined,
       filter: filter ? JSON.parse(filter) : undefined
